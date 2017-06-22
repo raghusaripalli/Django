@@ -7,6 +7,33 @@ min-height: 100vh;
 flex-direction: column;
 }
 
-main {
-flex: 1 0 auto;
+.mystyle {
+    flex: 1 0 auto;
+    margin-left: 75px;
+    margin-right: 75px;
+    margin-top: 2px;
+}
+
+.myfooter{
+    padding: 0px;
+}
+
+.mycard{
+    margin: 0px;
+}
+
+.Deletelist{
+    color: red !important;
+}
+
+.Updatelist{
+    color: green !important;
+}
+
+.Deleteitem{
+    color: red !important;
+}
+
+.UpdateItem{
+    color: green !important;
 }

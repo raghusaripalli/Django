@@ -1,9 +1,15 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import HttpResponse, Http404
 from django.template import loader
+import datetime
 from django.urls import reverse_lazy
+from django.utils.decorators import method_decorator
+from django.views.decorators.csrf import csrf_exempt
 from django.views.generic import DetailView, ListView, CreateView, UpdateView, DeleteView
 from rest_framework import generics
+from rest_framework.authentication import SessionAuthentication, BasicAuthentication
+from rest_framework.permissions import IsAuthenticated
+from rest_framework_jwt.authentication import JSONWebTokenAuthentication
 
 from ToDoApp.models import *
 
@@ -23,8 +29,10 @@ def mergedview(request):
     return HttpResponse(template.render(context, request))
 
 
-class TotalListView(ListView):
+class TotalListView(LoginRequiredMixin, ListView):
     model = ToDoList
+    authentication_classes = (JSONWebTokenAuthentication, SessionAuthentication, BasicAuthentication)
+    permission_classes = (IsAuthenticated,)
 
     def get_context_data(self, **kwargs):
         context = super(TotalListView, self).get_context_data(**kwargs)
@@ -62,29 +70,48 @@ class DeleteTodoList(LoginRequiredMixin, DeleteView):
     success_url = reverse_lazy('homepage')
 
 
-#################
+#####################
     # Rest API's :-)
-#################
+####################
 
-class List_All(generics.ListCreateAPIView):
+class List_All( generics.ListCreateAPIView):
+    authentication_classes = (JSONWebTokenAuthentication, SessionAuthentication)
+    permission_classes = (IsAuthenticated,)
     serializer_class = listSerializer
 
     def get_queryset(self, queryset=None):
         try:
+            print self.request.user
             return ToDoList.objects.filter(user__username = self.request.user)
-            pass
         except:
             return Http404
 
+    # @method_decorator(csrf_exempt)
+    # def dispatch(self, request, *args, **kwargs):
+    #     return super(List_All, self).dispatch(request, *args, **kwargs)
+
+    def post(self, request, *args, **kwargs):
+        print "in post"
+        i = datetime.datetime.now()
+        request.POST._mutable = True
+        request.POST['creation_date']=str(i).split(' ')[0]
+        request.POST['user'] = self.request.user.id
+        return self.create(request, *args, **kwargs)
 
 class List_Specific(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = listSerializer
+    authentication_classes = (JSONWebTokenAuthentication, SessionAuthentication)
+    permission_classes = (IsAuthenticated,)
 
     def get_object(self, queryset=None):
         try:
             return ToDoList.objects.filter(user__username = self.request.user).get(pk=self.kwargs['pk'])
         except:
             return Http404
+
+    def put(self, request, *args, **kwargs):
+        kwargs['partial']=True
+        return self.update(request, *args, **kwargs)
 
 class Item_All(generics.ListCreateAPIView):
     serializer_class = itemSerializer
@@ -114,7 +141,8 @@ class List_Specific_Item(generics.ListCreateAPIView):
             return Http404
 
     def post(self, request, *args, **kwargs):
-        request.data['parent'] = self.kwargs['list_id']
+        request.POST._mutable = True
+        request.POST['parent'] = self.kwargs['list_id']
         return self.create(request, *args, **kwargs)
 
 
@@ -128,5 +156,6 @@ class List_Specific_Item_Specific(generics.RetrieveUpdateDestroyAPIView):
             return Http404
 
     def put(self, request, *args, **kwargs):
-        request.data['parent'] = self.kwargs['list_id']
+        request.POST._mutable = True
+        request.POST['parent'] = self.kwargs['list_id']
         return self.update(request, *args, **kwargs)

@@ -9,33 +9,126 @@
     <link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}">
     <!--Let browser know website is optimized for mobile-->
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta name="staticpath" content="{% static 'helpers/'%}">
       <title>List</title>
   </head>
-  <body>
+  <body class="grey lighten-4">
   <header>
-
+    <div class="navbar-fixed">
+    <nav class="teal">
+      <div class="container nav-wrapper">
+        <a href="#!" class="brand-logo">To-Do App</a>
+        <ul class="right hide-on-med-and-down">
+          
+        </ul>
+      </div>
+    </nav>
+  </div>
   </header>
-  <main>
+  <main class="mystyle container-fluid white card z-depth-5">
     <div class="container">
-      <div class="row">
-        <div class="col m8 offset-m2">
-          {% for i in ram %}
-          <div class="card z-depth-5">
-            <div class="card-content center hoverable">
-              <p class="right">{{i.creation_date}}</p>
-              <h1 class="card-title"><a href="{{i.id}}">{{i.name}}</a></h1>
-            </div>
-          </div>
-          {% endfor %}
+      <div class="mycardrow row">
+        <div class="mylist col m8 offset-m2">
+          <ul id="mylist" class="collapsible" data-collapsible="accordion"></ul>
         </div>
       </div>
     </div>
-  </main>
-  <footer>
 
+    <div id="modal1" class="modal">
+      <form id="form1">
+        {% csrf_token %}
+        <div class="modal-content">
+            <div class="input-field col s6">
+              <i class="material-icons prefix">account_circle</i>
+              <input id="icon_prefix" type="text" autofocus class="validate" name="name">
+              <label for="icon_prefix">Title</label>
+            </div>
+        </div>
+        <div class="modal-footer">
+          <input id="submitbtn" class="modal-action modal-close waves-effect waves-teal btn-flat" value="Submit" type="submit">
+        </div>
+      </form>
+    </div>
+
+
+    <div id="modal2" class="modal">
+      <form id="form2">
+        <div class="modal-content">
+            <div class="input-field col s6">
+              <i class="material-icons prefix">account_circle</i>
+              <input id="icon_prefix1" type="text" autofocus class="validate" name="name">
+              <label for="icon_prefix1">Title</label>
+            </div>
+        </div>
+        <div class="modal-footer">
+          <input id="updatebtn" class="modal-action modal-close waves-effect waves-teal btn-flat" value="Submit" type="submit">
+        </div>
+      </form>
+    </div>
+
+    <div id="modal3" class="modal modal-fixed-footer">
+      <form id="form3">
+        {% csrf_token %}
+        <div class="modal-content">
+            <div class="input-field col s6">
+              <i class="material-icons prefix">textsms</i>
+              <textarea id="textarea1" class="materialize-textarea" autofocus data-length="120" name="description" placeholder="Description"></textarea>
+            </div>
+          <div class="input-field col s6">
+            <input type="date" placeholder="Due_by_date" name="due_by">
+          </div>
+          <div class="input-field col s6">
+              <input type="checkbox" id="test5" name="completed"/>
+              <label for="test5">Completed</label>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <input id="createItembtn" class="modal-action modal-close waves-effect waves-teal btn-flat" value="Submit" type="submit">
+        </div>
+      </form>
+    </div>
+
+    <div id="modal4" class="modal modal-fixed-footer">
+      <form id="form4">
+        {% csrf_token %}
+        <div class="modal-content">
+            <div class="input-field col s6">
+              <i class="material-icons prefix">textsms</i>
+              <textarea class="materialize-textarea" data-length="120" autofocus name="description" placeholder="Description"></textarea>
+            </div>
+          <div class="input-field col s6">
+            <input type="date" placeholder="Due_by_date" name="due_by">
+          </div>
+          <div class="input-field col s6">
+              <input type="checkbox" id="test6" name="completed"/>
+              <label for="test6">Completed</label>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <input id="updateItembtn" class="modal-action modal-close waves-effect waves-teal btn-flat" value="Submit" type="submit">
+        </div>
+      </form>
+    </div>
+
+    <div class="center">
+      <a class="modal-trigger waves-effect waves-light btn-floating btn-large tooltipped blue darken-3"
+         data-position="top" data-delay="50"
+         href="#modal1" data-tooltip="Create New List">
+        <i class="material-icons">playlist_add</i>
+      </a>
+  </div>
+    <br><br>
+  </main>
+  <footer class="myfooter page-footer grey lighten-4">
+    <div class="footer-copyright grey lighten-4">
+      <div class="container center-align black-text">
+        <b>© 2017, Developed with &hearts; by Raghu Saripalli</b>
+      </div>
+    </div>
   </footer>
   <script type="text/javascript" src="{% static 'js/jquery.js' %}"></script>
   <script type="text/javascript" src="{% static 'js/materialize.min.js' %}"></script>
   <script type="text/javascript" src="{% static 'js/myscript.js' %}"></script>
+  <script type="text/javascript" src="{% static 'js/jquery.tmpl.min.js' %}"></script>
   </body>
 </html>

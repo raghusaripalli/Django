@@ -1,7 +1,8 @@
+from django.contrib.auth import login
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.http import HttpResponse, Http404
-from django.shortcuts import redirect
+from django.http import HttpResponse, Http404, HttpResponseRedirect
+from django.shortcuts import redirect, render
 from django.template import loader
 import datetime
 from django.urls import reverse_lazy
@@ -14,6 +15,9 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework_jwt.authentication import JSONWebTokenAuthentication
 from django.contrib import auth
 from ToDoApp.models import *
+from django.contrib.auth import login, authenticate
+from django.contrib.auth.forms import UserCreationForm
+from django.shortcuts import render, redirect
 
 
 # Create your views here.
@@ -165,3 +169,18 @@ class List_Specific_Item_Specific(generics.RetrieveUpdateDestroyAPIView):
         request.POST._mutable = True
         request.POST['parent'] = self.kwargs['list_id']
         return self.update(request, *args, **kwargs)
+
+
+def signup(request):
+    if request.method == 'POST':
+        form = UserCreationForm(request.POST)
+        if form.is_valid():
+            form.save()
+            username = form.cleaned_data.get('username')
+            raw_password = form.cleaned_data.get('password1')
+            user = authenticate(username=username, password=raw_password)
+            login(request, user)
+            return redirect('/ToDoApp/')
+    else:
+        form = UserCreationForm()
+    return render(request, 'signup.html', {'form': form})

@@ -74,7 +74,7 @@ $(document).ready(function(){
         return cookieValue;
     }
 
-    $.get("http://127.0.0.1:8000/ToDoApp/restlist/", function(data, status){
+    $.get("restlist/", function(data, status){
         $.get(helperpath+'showList.html', function(myhtml){
             $.template('mytodolist', myhtml);
             $.tmpl( "mytodolist", data ).appendTo( "#mylist");;
@@ -102,7 +102,7 @@ $(document).ready(function(){
             var k = $(p).children(".collapsible-body");
             if ($(k).html()==""){
                 $(k).append('<div class="center"><a class="CreateItemBtn modal-trigger waves-effect waves-light btn-flat waves-teal" href="#modal3">Create New Item</a></div><br>');
-                $.get("http://127.0.0.1:8000/ToDoApp/restlist/"+id+"/restitem/", function(data, status){
+                $.get("restlist/"+id+"/restitem/", function(data, status){
                      $.get(helperpath+'showItems.html', function(myhtml){
                         $.template('mytodolist', myhtml);
                         $.tmpl( "mytodolist", data ).appendTo( k );
@@ -119,7 +119,7 @@ $(document).ready(function(){
       for (i=0;i<formdata.length;i++){
         data[formdata[i].name] = formdata[i].value;
       }
-        var posting = $.post( "http://127.0.0.1:8000/ToDoApp/restlist/", data, function( data ) {
+        var posting = $.post( "restlist/", data, function( data ) {
             $.get(helperpath+'showList.html', function(myhtml){
                 $.template('mytodolist', myhtml);
                 $.tmpl( "mytodolist", data ).appendTo( "#mylist" );
@@ -136,7 +136,7 @@ $(document).ready(function(){
             data[formdata[i].name] = formdata[i].value;
           }
           $.ajax({
-            url: 'http://127.0.0.1:8000/ToDoApp/restlist/'+id+'/',
+            url: 'restlist/'+id+'/',
             type: 'PUT',
             data: data,
             beforeSend: function(xhr) {
@@ -161,7 +161,7 @@ $(document).ready(function(){
       if (data['completed']=="on") data['completed']= true;
       else data['completed'] = false;
       console.log(data);
-        var posting = $.post( "http://127.0.0.1:8000/ToDoApp/restlist/"+id+"/restitem/", data, function( data ) {
+        var posting = $.post( "restlist/"+id+"/restitem/", data, function( data ) {
             $.get(helperpath+'showItems.html', function(myhtml){
                 $.template('mytodolist', myhtml);
                 $.tmpl( "mytodolist", data ).appendTo( parentToTrigger );
@@ -178,7 +178,7 @@ $(document).ready(function(){
             data[formdata[i].name] = formdata[i].value;
           }
           $.ajax({
-            url: 'http://127.0.0.1:8000/ToDoApp/restlist/'+listid+'/restitem/'+id+'/',
+            url: 'restlist/'+listid+'/restitem/'+id+'/',
             type: 'PUT',
             data: data,
             beforeSend: function(xhr) {
@@ -202,10 +202,12 @@ $(document).ready(function(){
         var id = mylist.attr("id");
         console.log(id);
         $.ajax({
-            url: 'http://127.0.0.1:8000/ToDoApp/restlist/'+id+'/',
+            url: 'restlist/'+id+'/',
             type: 'DELETE',
             beforeSend: function(xhr) {
+            if (confirm("Do you really want to delete ?"))
                 xhr.setRequestHeader("X-CSRFToken", getCookie("csrftoken"));
+                else return;
             },
             success: function(result) {
                 mylist.fadeIn("fast", function() {
@@ -223,7 +225,7 @@ $(document).ready(function(){
         parentlist = mylist.parents().eq(1);
         listid = parentlist.attr("id");
         $.ajax({
-            url: 'http://127.0.0.1:8000/ToDoApp/restlist/'+listid+'/restitem/'+updateid+'/',
+            url: 'restlist/'+listid+'/restitem/'+updateid+'/',
             type: 'DELETE',
             beforeSend: function(xhr) {
                 if (confirm("Do you really want to delete ?"))

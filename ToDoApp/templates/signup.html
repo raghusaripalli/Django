@@ -23,25 +23,28 @@
     </header>
     <main>
       <br><br>
-      <div class="materialContainer">
+        <div class="materialContainer">
        <div class="box">
-           <form method="post">
-          <div class="title">LOGIN</div>
-           {% csrf_token %}
-            {{ form.as_p }}
-          <div class="button login">
-             <button type="submit" value="Submit" ><span>GO</span><i class="fa fa-check"></i></button>
+            <div class="title">REGISTER</div>
+            <form action="" method="post">
+                {% csrf_token %}
+                {% for field in form %}
+                    {{ field.label_tag }}<br>
+                    {{ field }}
+                    <!--{% if field.help_text %}-->
+                      <!--<small style="color: grey">{{ field.help_text }}</small>-->
+                    <!--{% endif %}-->
+                    {% for error in field.errors %}
+                      <p style="color: red">{{ error }}</p>
+                    {% endfor %}
+                <br>
+                {% endfor %}
+            <div class="button login">
+             <button type="submit" value="Submit" ><span>Next</span><i class="fa fa-check"></i></button>
           </div>
-               </form>
-          <a href="{% url 'signup' %}" class="pass-forgot">New User? Register Here</a>
-       </div>
-        <!--<div class="materialContainer">-->
-       <!--<div class="overbox">-->
-           <!--<div class="material-button alt-2"><span class="shape"></span></div>-->
-           <!--<a href="{% url 'signup' %}"></a>-->
-       <!--</div>-->
-        <!--</div>-->
-    </div>
+            </form>
+           </div>
+        </div>
     </main>
     <footer class="myfooter page-footer grey lighten-4">
     <div class="footer-copyright grey lighten-4">

@@ -1,5 +1,7 @@
+from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import HttpResponse, Http404
+from django.shortcuts import redirect
 from django.template import loader
 import datetime
 from django.urls import reverse_lazy
@@ -10,13 +12,17 @@ from rest_framework import generics
 from rest_framework.authentication import SessionAuthentication, BasicAuthentication
 from rest_framework.permissions import IsAuthenticated
 from rest_framework_jwt.authentication import JSONWebTokenAuthentication
-
+from django.contrib import auth
 from ToDoApp.models import *
 
 
 # Create your views here.
 from ToDoApp.serializers import listSerializer, itemSerializer
 
+
+def logout(request):
+    auth.logout(request)
+    return redirect('/auth/login/')
 
 def mergedview(request):
     obj = ToDoList.objects.all()

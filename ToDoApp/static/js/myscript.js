@@ -77,8 +77,21 @@ $(document).ready(function(){
     $.get("http://127.0.0.1:8000/ToDoApp/restlist/", function(data, status){
         $.get(helperpath+'showList.html', function(myhtml){
             $.template('mytodolist', myhtml);
-            $.tmpl( "mytodolist", data ).appendTo( "#mylist" );
+            $.tmpl( "mytodolist", data ).appendTo( "#mylist");;
         });
+    });
+
+    $("#search").keyup(function(){
+        var b = $(this).val();
+        var arr = $("#mylist").find("li");
+        for (i=0;i<arr.length;i++){
+            var n = $(arr[i]).find("h5")[0];
+            console.log(n);
+            if ($(n).text().includes(b))
+                $(arr[i]).show();
+            else
+                $(arr[i]).hide();
+        }
     });
 
     $("body").on('click','.collapsible-header', function(){
@@ -192,13 +205,12 @@ $(document).ready(function(){
             url: 'http://127.0.0.1:8000/ToDoApp/restlist/'+id+'/',
             type: 'DELETE',
             beforeSend: function(xhr) {
-                if (confirm("Do you really want to delete ?"))
                 xhr.setRequestHeader("X-CSRFToken", getCookie("csrftoken"));
-                else return;
             },
             success: function(result) {
-                mylist.fadeIn(1000).hide();
-                mylist.remove();
+                mylist.fadeIn("fast", function() {
+                  $(this).delay(500).fadeOut("slow");
+                });
             }
         });
     });

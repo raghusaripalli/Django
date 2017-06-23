@@ -19,6 +19,7 @@ urlpatterns = [
     url(r'^restitem/(?P<pk>[0-9]+)/$', Item_Specific.as_view(), name='rest_item_id'),
     url(r'restlist/(?P<list_id>[0-9]+)/restitem/$', List_Specific_Item.as_view(), name='rest_list_id_item'),
     url(r'restlist/(?P<list_id>[0-9]+)/restitem/(?P<item_id>[0-9]+)/$', List_Specific_Item_Specific.as_view(), name='rest_list_id_item_id'),
+    url(r'logout/$',logout,name="logout"),
     url(r'^api-token-auth/', obtain_jwt_token),
     url(r'^api-token-refresh/', refresh_jwt_token),
     url(r'^api-token-verify/', verify_jwt_token),

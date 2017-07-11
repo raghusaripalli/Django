@@ -8,6 +8,14 @@ $(document).ready(function(){
     var parentToTrigger = 0;
     var parentlist = 0;
     var listid = 0;
+    $(function(){           
+        if (!Modernizr.inputtypes.date) {
+            $('input[type=date]').datepicker({
+                  dateFormat : 'yy-mm-dd'
+                }
+             );
+        }
+    });
     $(document).ready(function() {
         $('input#input_text, textarea#textarea1').characterCounter();
       });

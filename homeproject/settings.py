@@ -152,13 +152,11 @@ LOGGING = {
         },
         'haha': {
             'level': 'DEBUG',
-            'class':'logging.FileHandler',
-            'filename':'D://ToDoApp.log',
+            'class':'logging.StreamHandler',
         },
         'hehe': {
             'level': 'DEBUG',
-            'class':'logging.FileHandler',
-            'filename':'D://ToDoApp_db.log',
+            'class':'logging.StreamHandler',
         },
     },
     'loggers': {

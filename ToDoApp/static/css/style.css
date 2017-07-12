@@ -1,0 +1,48 @@
+.divinternal{
+    margin-bottom: 100px;
+}
+body {
+display: flex;
+min-height: 100vh;
+flex-direction: column;
+background-image: url(https://lh4.googleusercontent.com/-XplyTa1Za-I/VMSgIyAYkHI/AAAAAAAADxM/oL-rD6VP4ts/w1184-h666/Android-Lollipop-wallpapers-Google-Now-Wallpaper-2.png);
+background-position: center;
+background-size: cover;
+background-repeat: no-repeat;
+min-height: 100vh;
+font-family: 'Roboto', sans-serif;
+}
+
+main{
+    flex: 1 0 auto;
+}
+.mystyle {
+    flex: 1 0 auto;
+    margin-left: 75px;
+    margin-right: 75px;
+    margin-top: 2px;
+}
+
+.myfooter{
+    padding: 0px;
+}
+
+.mycard{
+    margin: 0px;
+}
+
+.Deletelist{
+    color: red !important;
+}
+
+.Updatelist{
+    color: green !important;
+}
+
+.Deleteitem{
+    color: red !important;
+}
+
+.UpdateItem{
+    color: green !important;
+}
